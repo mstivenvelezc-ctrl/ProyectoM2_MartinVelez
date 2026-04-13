@@ -1,9 +1,15 @@
-const { loadEnvFile } = require('node:process');
 const express = require('express');
+const { loadEnvFile } = require('node:process');
+loadEnvFile('.env');
+
+console.log(process.env.DB_HOST);     
+console.log(process.env.DB_PORT);      
+console.log(process.env.DB_NAME);      
+console.log(process.env.PORT);   
+
 const usuariosRouter = require('./routes/usuarios');
 const publicacionesRouter = require('./routes/publicaciones');
 
-loadEnvFile('.env');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -25,15 +31,29 @@ app.get('/', (req, res) => {
   });
 });
 
+// Middleware de manejo de errores de base de datos
+app.use((err, req, res, next) => {
+  console.error('Error no manejado:', err);
+  
+  // Error de PostgreSQL
+  if (err.code) {
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'Registro duplicado' });
+    }
+    if (err.code === '23503') {
+      return res.status(409).json({ error: 'Violación de relación entre tablas' });
+    }
+    if (err.code === '23502') {
+      return res.status(400).json({ error: 'Campo requerido faltante' });
+    }
+  }
+  
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
+
 // Manejo de rutas no encontradas
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
-});
-
-// Manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Error interno del servidor' });
 });
 
 app.listen(PORT, () => {

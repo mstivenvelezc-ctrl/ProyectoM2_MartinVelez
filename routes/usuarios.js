@@ -1,90 +1,121 @@
+const { loadEnvFile } = require('node:process');
+loadEnvFile('.env');
+
 const express = require('express');
 const router = express.Router();
 
 // Datos en memoria (se reemplazarán con base de datos)
-let usuarios = [
-  { 
-    id: 1, 
-    name: 'Ana García', 
-    email: 'ana@example.com', 
-    bio: 'Desarrolladora full-stack apasionada por Node.js' 
-  },
-  { 
-    id: 2, 
-    name: 'Carlos Ruiz', 
-    email: 'carlos@example.com', 
-    bio: 'Escritor técnico especializado en bases de datos' 
-  },
-  { 
-    id: 3, 
-    name: 'María López', 
-    email: 'maria@example.com', 
-    bio: 'Ingeniera de software con foco en APIs REST' 
+const pool = require('../db/config');
+
+router.get('/', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM usuarios ORDER BY name');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error obteniendo usuarios:', error);
+    res.status(500).json({ error: 'Error obteniendo usuarios' });
   }
-];
+});
 
 // GET /api/usuarios - Obtener todos los usuarios
-router.get('/', (req, res) => {
-  res.json(usuarios);
+router.get('/', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM usuarios ORDER BY name');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error obteniendo usuarios:', error);
+    res.status(500).json({ error: 'Error obteniendo usuarios' });
+  }
 });
 
 // GET /api/usuarios/:id - Obtener un usuario por ID
-router.get('/:id', (req, res) => {
-  const usuario = usuarios.find(u => u.id === parseInt(req.params.id));
-  
-  if (!usuario) {
-    return res.status(404).json({ error: 'Usuario no encontrado' });
+router.get('/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM usuarios WHERE id = $1',
+      [req.params.id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error obteniendo usuario:', error);
+    res.status(500).json({ error: 'Error obteniendo usuario' });
   }
-  
-  res.json(usuario);
 });
 
 // POST /api/usuarios - Crear un nuevo usuario
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { name, email, bio } = req.body;
   
   if (!name || !email) {
     return res.status(400).json({ error: 'Nombre y email son requeridos' });
   }
   
-  const newUsuario = {
-    id: usuarios.length + 1,
-    name,
-    email,
-    bio: bio || ''
-  };
-  
-  usuarios.push(newUsuario);
-  res.status(201).json(newUsuario);
+  try {
+    const result = await pool.query(
+      'INSERT INTO usuarios (name, email, bio) VALUES ($1, $2, $3) RETURNING *',
+      [name, email, bio || null]
+    );
+    
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error creando usuario:', error);
+    
+    if (error.code === '23505') {
+      return res.status(409).json({ error: 'El email ya está registrado' });
+    }
+    
+    res.status(500).json({ error: 'Error creando usuario' });
+  }
 });
 
 // PUT /api/usuarios/:id - Actualizar un usuario
-router.put('/:id', (req, res) => {
-  const usuario = usuarios.find(u => u.id === parseInt(req.params.id));
-  
-  if (!usuario) {
-    return res.status(404).json({ error: 'Usuario no encontrado' });
-  }
-  
+router.put('/:id', async (req, res) => {
   const { name, email, bio } = req.body;
   
-  if (name) usuario.name = name;
-  if (email) usuario.email = email;
-  if (bio !== undefined) usuario.bio = bio;
-  
-  res.json(usuario);
+  try {
+    const result = await pool.query(
+      'UPDATE usuarios SET name = COALESCE($1, name), email = COALESCE($2, email), bio = COALESCE($3, bio) WHERE id = $4 RETURNING *',
+      [name, email, bio, req.params.id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error actualizando usuario:', error);
+    
+    if (error.code === '23505') {
+      return res.status(409).json({ error: 'El email ya está registrado' });
+    }
+    
+    res.status(500).json({ error: 'Error actualizando usuario' });
+  }
 });
 
 // DELETE /api/usuarios/:id - Eliminar un usuario
-router.delete('/:id', (req, res) => {
-  const index = usuarios.findIndex(u => u.id === parseInt(req.params.id));
-  
-  if (index === -1) {
-    return res.status(404).json({ error: 'Usuario no encontrado' });
+router.delete('/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'DELETE FROM usuarios WHERE id = $1',
+      [req.params.id]
+    );
+    
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    res.json({ message: 'Usuario eliminado exitosamente' });
+  } catch (error) {
+    console.error('Error eliminando usuario:', error);
+    res.status(500).json({ error: 'Error eliminando usuario' });
   }
-  
-  usuarios.splice(index, 1);
-  res.json({ message: 'Usuario eliminado exitosamente' });
 });
 
 module.exports = router;
