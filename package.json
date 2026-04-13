@@ -1,13 +1,15 @@
 {
   "name": "proyectom2_martinvelez",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API REST para blog con Express y PostgreSQL",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["express", "postgresql", "api", "blog"],
+  "usuario": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
