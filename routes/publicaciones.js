@@ -1,11 +1,6 @@
-const { loadEnvFile } = require('node:process');
-loadEnvFile('.env');
-
-const express = require('express');
+import express from "express";
+import pool from "../db/config.js";
 const router = express.Router();
-
-// Datos en memoria (se reemplazarán con base de datos)
-const pool = require('../db/config');
 
 // GET /api/posts - Obtener todos las publicaciones
 router.get('/', async (req, res) => {
@@ -51,11 +46,11 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/posts - Crear una nueva publicación
 router.post('/', async (req, res) => {
-  const { title, content, author_id, published } = req.body;
+  const { title, content, usuario_id, published } = req.body;
   
-  if (!title || !content || !author_id) {
+  if (!title || !content || !usuario_id) {
     return res.status(400).json({ 
-      error: 'Título, contenido y author_id son requeridos' 
+      error: 'Título, contenido y usuario_id son requeridos' 
     });
   }
   
@@ -116,19 +111,19 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// GET /api/posts/author/:authorId - Obtener publicaciones por usuario
-router.get('/author/:authorId', async (req, res) => {
+// GET /api/posts/author/:usuarioId - Obtener publicaciones por usuario
+router.get('/usuarios/:usuarioId', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM posts WHERE author_id = $1 ORDER BY created_at DESC',
-      [req.params.authorId]
+      'SELECT * FROM publicaciones WHERE usuario_id = $1 ORDER BY created_at DESC',
+      [req.params.usuarioId]
     );
     
     res.json(result.rows);
   } catch (error) {
-    console.error('Error obteniendo posts del autor:', error);
-    res.status(500).json({ error: 'Error obteniendo posts del autor' });
+    console.error('Error obteniendo publicaciones del usuario:', error);
+    res.status(500).json({ error: 'Error obteniendo publicaciones del usuario' });
   }
 });
 
-module.exports = router;
+export default router;

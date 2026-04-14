@@ -1,9 +1,8 @@
-const express = require('express');
-const { loadEnvFile } = require('node:process');
-loadEnvFile('.env');
+import "dotenv/config";
+import express  from "express";
 
-const usuariosRouter = require('./routes/usuarios');
-const publicacionesRouter = require('./routes/publicaciones');
+import usuariosRouter from "./routes/usuarios.js";
+import publicacionesRouter from"./routes/publicaciones.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +50,8 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+

@@ -1,0 +1,1 @@
+export const getALLusuario = async (req, res) => {}

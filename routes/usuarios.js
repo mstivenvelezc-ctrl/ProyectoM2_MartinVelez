@@ -1,12 +1,8 @@
-const { loadEnvFile } = require('node:process');
-loadEnvFile('.env');
-
-const express = require('express');
+import express from "express";
+import pool from "../db/config.js";
 const router = express.Router();
 
-// Datos en memoria (se reemplazarán con base de datos)
-const pool = require('../db/config');
-
+// GET /api/usuarios - Obtener todos los usuarios
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM usuarios ORDER BY name');
@@ -118,4 +114,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
