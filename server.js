@@ -2,11 +2,6 @@ const express = require('express');
 const { loadEnvFile } = require('node:process');
 loadEnvFile('.env');
 
-console.log(process.env.DB_HOST);     
-console.log(process.env.DB_PORT);      
-console.log(process.env.DB_NAME);      
-console.log(process.env.PORT);   
-
 const usuariosRouter = require('./routes/usuarios');
 const publicacionesRouter = require('./routes/publicaciones');
 
