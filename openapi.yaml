@@ -30,3 +30,18 @@ info:
                   $ref: '#/components/schemas/Usuario'
         '500':
           description: Error al obtener usuarios
+
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Juan Pérez
+        email:
+          type: string
+          example:
