@@ -1,35 +1,68 @@
+openapi: 3.1.1
 info:
   title: ProyectoM2_MartinVelez API
   version: 1.0.0
-  description: API para gestionar autores y posts
+  description: API para gestionar usuarios y publicaciones
   contact:
     name: Tu Nombre
     email: tu@email.com
 
-    servers:
+servers:
   - url: http://localhost:3000
     description: Servidor de desarrollo
-  - url: https://api.ejemplo.com
+  - url: https:// ProyectoM2_MartinVelez.railway.app
     description: Servidor de producción
-
-    paths:
-  /usuarios:
+paths:
+  /api/usuarios:
     get:
       summary: Obtener todos los usuarios
-      description: Devuelve una lista de todos los usuarios registrados.
-      tags:
-        - Usuarios  
       responses:
         '200':
-          description: Lista de usuarios obtenida exitosamente
+          description: Lista de usuarios
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
-        '500':
-          description: Error al obtener usuarios
+
+    post:
+      summary: Crear usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuario creado
+
+  /api/usuarios/{id}:
+    get:
+      summary: Obtener usuario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: No encontrado
+
+  /api/publicaciones:
+    get:
+      summary: Obtener publicaciones
+      responses:
+        '200':
+          description: Lista de publicaciones
 
 components:
   schemas:
@@ -38,10 +71,15 @@ components:
       properties:
         id:
           type: integer
-          example: 1
         name:
           type: string
-          example: Juan Pérez
         email:
           type: string
-          example:
+        bio:
+          type: string
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string

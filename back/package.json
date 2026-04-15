@@ -2,10 +2,10 @@
   "name": "proyectom2_martinvelez",
   "version": "1.0.0",
   "description": "API REST para blog con Express y PostgreSQL",
-  "main": "index.js",
+  "main": "./src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
+    "start": "node ./src/server.js",
+    "dev": "node --watch ./src/server.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage "
   },
