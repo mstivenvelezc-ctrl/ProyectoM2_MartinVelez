@@ -38,16 +38,16 @@ export const getPublicacionesById = async (req, res) => {
 
 // POST /api/posts - Crear una nueva publicación
 export const createPublicaciones = async (req, res) => {
- const { title, content, usuario_id, published } = req.body;
-  if (!title || !content || !usuario_id) {
+  const { title, content, usuarios_id, published } = req.body;
+  if (!title || !content || !usuarios_id) {
     return res.status(400).json({ 
-      error: 'Título, contenido y usuario_id son requeridos' 
+      error: 'Título, contenido y usuarios_id son requeridos' 
     });
   }
   try {
     const result = await pool.query(
-      'INSERT INTO publicaciones (title, content, usuario_id, published) VALUES ($1, $2, $3, $4) RETURNING *',
-      [title, content, usuario_id, published || false]
+      'INSERT INTO publicaciones (title, content, usuarios_id, published) VALUES ($1, $2, $3, $4) RETURNING *',
+      [title, content, usuarios_id, published || false]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -96,9 +96,9 @@ export const deletePublicaciones = async (req, res) => {
 
 // GET /api/posts/author/:usuarioId - Obtener publicaciones por usuario
 export const getPublicacionesByUsuarioId = async (req, res) => {
-     try {
+    try {
     const result = await pool.query(
-      'SELECT * FROM publicaciones WHERE usuario_id = $1 ORDER BY created_at DESC',
+      'SELECT * FROM publicaciones WHERE usuarios_id = $1 ORDER BY created_at DESC',
       [req.params.usuarioId]
     );
     res.json(result.rows);
