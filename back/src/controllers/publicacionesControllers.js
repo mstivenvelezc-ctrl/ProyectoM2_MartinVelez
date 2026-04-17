@@ -4,7 +4,7 @@ import pool from '../db/config.js';
 import { validarTitle, validarUsuariosId, validarContent, validarPublished } from '../utils/validatorsP.js';
 
 // GET /api/posts - Obtener todos las publicaciones
-export const getAllPublicaciones = async (req, res) => {
+export const getAllPublicaciones = async (req, res, next) => {
 const { published } = req.query;
   try {
     let query = 'SELECT * FROM publicaciones';
@@ -17,30 +17,28 @@ const { published } = req.query;
     const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (error) {
-    console.error('Error obteniendo publicaciones:', error);
-    res.status(500).json({ error: 'Error obteniendo publicaciones' });
+    return next(internalServerError("Error obteniendo publicaciones"));
   }
 };
 
 // GET /api/posts/:id - Obtener una publicación por ID
-export const getPublicacionesById = async (req, res) => {
+export const getPublicacionesById = async (req, res, next) => {
     try {
     const result = await pool.query(
       'SELECT * FROM publicaciones WHERE id = $1',
       [req.params.id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Publicación no encontrada' });
+      return next(notFound("Publicación no encontrada"));
     }
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error obteniendo publicación:', error);
-    res.status(500).json({ error: 'Error obteniendo publicación' });
+    return next(internalServerError("Error obteniendo publicación"));
   }
 };
 
 // POST /api/posts - Crear una nueva publicación
-export const createPublicaciones = async (req, res) => {
+export const createPublicaciones = async (req, res, next) => {
   const { title, content, usuarios_id, published } = req.body;
 
   const titleError = validarTitle(title);
@@ -49,7 +47,7 @@ export const createPublicaciones = async (req, res) => {
   const publishedError = validarPublished(published);
 
   if (titleError || contentError || usuariosIdError || publishedError) {
-    return res.status(400).json({ error: titleError || contentError || usuariosIdError || publishedError });
+    return next(badRequest(titleError || contentError || usuariosIdError || publishedError));
   }
 
   try {
@@ -61,14 +59,14 @@ export const createPublicaciones = async (req, res) => {
   } catch (error) {
     console.error('Error creando publicación:', error);
     if (error.code === '23503') {
-      return res.status(404).json({ error: 'El autor especificado no existe' });
+      return next(notFound("El autor especificado no existe"));
     }
-    res.status(500).json({ error: 'Error creando publicación' });
+    return next(internalServerError("Error creando publicación"));
   }
 };
 
 // PUT /api/posts/:id - Actualizar una publicación
-export const updatePublicaciones = async (req, res) => {
+export const updatePublicaciones = async (req, res, next) => {
   const { title, content, published } = req.body;
 
   const titleError = validarTitle(title);
@@ -76,43 +74,43 @@ export const updatePublicaciones = async (req, res) => {
   const publishedError = validarPublished(published);
 
   if (titleError || contentError || publishedError) {
-    return res.status(400).json({ error: titleError || contentError || publishedError });
+    return next(badRequest(titleError || contentError || publishedError));
   }
-  
+
   try {
     const result = await pool.query(
       'UPDATE publicaciones SET title = COALESCE($1, title), content = COALESCE($2, content), published = COALESCE($3, published) WHERE id = $4 RETURNING *',
       [title, content, published, req.params.id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Publicación no encontrada' });
+      return next(notFound("Publicación no encontrada"));
     }
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error actualizando publicación:', error);
-    res.status(500).json({ error: 'Error actualizando publicación' });
+    return next(internalServerError("Error actualizando publicación"));
   }
 };
 
 // DELETE /api/posts/:id - Eliminar una publicación
-export const deletePublicaciones = async (req, res) => {
+export const deletePublicaciones = async (req, res, next) => {
     try {
     const result = await pool.query(
       'DELETE FROM publicaciones WHERE id = $1',
       [req.params.id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Publicación no encontrada' });
+      return next(notFound("Publicación no encontrada"));
     }
     res.json({ message: 'Publicación eliminada exitosamente' });
   } catch (error) {
     console.error('Error eliminando publicación:', error);
-    res.status(500).json({ error: 'Error eliminando publicación' });
+    return next(internalServerError("Error eliminando publicación"));
   }
 };
 
 // GET /api/posts/author/:usuarioId - Obtener publicaciones por usuario
-export const getPublicacionesByUsuarioId = async (req, res) => {
+export const getPublicacionesByUsuarioId = async (req, res, next) => {
     try {
     const result = await pool.query(
       'SELECT * FROM publicaciones WHERE usuarios_id = $1 ORDER BY created_at DESC',
@@ -121,6 +119,6 @@ export const getPublicacionesByUsuarioId = async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Error obteniendo publicaciones del usuario:', error);
-    res.status(500).json({ error: 'Error obteniendo publicaciones del usuario' });
+    return next(internalServerError("Error obteniendo publicaciones del usuario"));
   }
 };

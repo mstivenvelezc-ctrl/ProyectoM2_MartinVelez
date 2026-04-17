@@ -1,11 +1,13 @@
 
 import express from "express";
 import router from "./routes/index.js";
+import { errorHandler } from "./middlewares/errorHanlder.js";
 
 const app = express();
 app.use(express.json());
 
 app.use('/api', router);
+app.use(errorHandler);
 
 
 // Log temporal para ver las rutas registradas
@@ -29,7 +31,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// Middleware de manejo de errores
+/*// Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error('Error no manejado:', err);
   if (err.code) {
@@ -39,8 +41,9 @@ app.use((err, req, res, next) => {
   }
   res.status(500).json({ error: 'Error interno del servidor' });
 });
+*/
 
-
+// Swagger UI para documentación
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import path from "path";
@@ -53,7 +56,7 @@ const swaggerDocument = YAML.load(
   path.join(__dirname, "../openapi.yaml")
 );
 
-// 🔥 AGREGA ESTO AQUÍ
+// Configuración de Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Ruta no encontrada
