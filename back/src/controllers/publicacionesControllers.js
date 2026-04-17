@@ -1,4 +1,7 @@
+// src/controllers/publicacionesControllers.js
 import pool from '../db/config.js';
+
+import { validarTitle, validarUsuariosId, validarContent, validarPublished } from '../utils/validatorsP.js';
 
 // GET /api/posts - Obtener todos las publicaciones
 export const getAllPublicaciones = async (req, res) => {
@@ -39,11 +42,16 @@ export const getPublicacionesById = async (req, res) => {
 // POST /api/posts - Crear una nueva publicación
 export const createPublicaciones = async (req, res) => {
   const { title, content, usuarios_id, published } = req.body;
-  if (!title || !content || !usuarios_id) {
-    return res.status(400).json({ 
-      error: 'Título, contenido y usuarios_id son requeridos' 
-    });
+
+  const titleError = validarTitle(title);
+  const contentError = validarContent(content);
+  const usuariosIdError = validarUsuariosId(usuarios_id);
+  const publishedError = validarPublished(published);
+
+  if (titleError || contentError || usuariosIdError || publishedError) {
+    return res.status(400).json({ error: titleError || contentError || usuariosIdError || publishedError });
   }
+
   try {
     const result = await pool.query(
       'INSERT INTO publicaciones (title, content, usuarios_id, published) VALUES ($1, $2, $3, $4) RETURNING *',
@@ -61,7 +69,16 @@ export const createPublicaciones = async (req, res) => {
 
 // PUT /api/posts/:id - Actualizar una publicación
 export const updatePublicaciones = async (req, res) => {
-const { title, content, published } = req.body;
+  const { title, content, published } = req.body;
+
+  const titleError = validarTitle(title);
+  const contentError = validarContent(content);
+  const publishedError = validarPublished(published);
+
+  if (titleError || contentError || publishedError) {
+    return res.status(400).json({ error: titleError || contentError || publishedError });
+  }
+  
   try {
     const result = await pool.query(
       'UPDATE publicaciones SET title = COALESCE($1, title), content = COALESCE($2, content), published = COALESCE($3, published) WHERE id = $4 RETURNING *',

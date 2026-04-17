@@ -1,5 +1,8 @@
+// src/routes/usuarios.js
+
 import { Router } from "express";
 
+//
 import {
   getAllUsuarios,
   getUsuarioById,
@@ -8,6 +11,8 @@ import {
   deleteUsuario
 } from "../controllers/usuariosControllers.js";
 
+
+// src/routes/usuarios.js
 const router = Router();
 
 
@@ -18,11 +23,11 @@ router.get('/', getAllUsuarios);
 router.get('/:id', getUsuarioById);
 
 // POST /api/usuarios - Crear un nuevo usuario
-router.post('/', createUsuario);
-  
+router.post('/', createUsuario); 
+
 // PUT /api/usuarios/:id - Actualizar un usuario
 router.put('/:id', updateUsuario);
-  
+
 // DELETE /api/usuarios/:id - Eliminar un usuario
 router.delete('/:id', deleteUsuario);
 

@@ -1,8 +1,11 @@
+// src/controllers/usuariosControllers.js
 import pool from '../db/config.js';
+
+import { validarName, validarEmail, validarBio } from '../utils/validatorsU.js';
 
 // GET /api/usuarios - Obtener todos los usuarios
 export const getAllUsuarios = async (req, res) => {
-     try {
+    try {
     const result = await pool.query('SELECT * FROM usuarios ORDER BY name');
     res.json(result.rows);
   } catch (error) {
@@ -31,9 +34,16 @@ export const getUsuarioById = async (req, res) => {
 // POST /api/usuarios - Crear un nuevo usuario
 export const createUsuario = async (req, res) => {
   const { name, email, bio } = req.body;
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Nombre y email son requeridos' });
+
+  const nameError = validarName(name);
+  const emailError = validarEmail(email);
+  const bioError = validarBio(bio);
+
+if (nameError || emailError || bioError) {
+    return res.status(400).json({ error: nameError || emailError || bioError });
   }
+
+  
   try {
     const result = await pool.query(
       'INSERT INTO usuarios (name, email, bio) VALUES ($1, $2, $3) RETURNING *',
@@ -52,6 +62,15 @@ export const createUsuario = async (req, res) => {
 // PUT /api/usuarios/:id - Actualizar un usuario
 export const updateUsuario = async (req, res) => {
     const { name, email, bio } = req.body;
+
+    const nameError = validarName(name);
+    const emailError = validarEmail(email);
+    const bioError = validarBio(bio);
+
+  if (nameError || emailError || bioError) {
+    return res.status(400).json({ error: nameError || emailError || bioError });
+  }
+
   try {
     const result = await pool.query(
       'UPDATE usuarios SET name = COALESCE($1, name), email = COALESCE($2, email), bio = COALESCE($3, bio) WHERE id = $4 RETURNING *',
@@ -86,3 +105,5 @@ export const deleteUsuario = async (req, res) => {
     res.status(500).json({ error: 'Error eliminando usuario' });
   }
 };
+
+
