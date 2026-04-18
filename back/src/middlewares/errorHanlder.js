@@ -21,3 +21,31 @@ export function errorHandler(err, req, res, next) {
 
     res.status(statusCode).json(response);
 };
+
+
+// Funciones helper para crear errores
+export function notFound(message = 'No encontrado') {
+    const error = new Error(message);
+    error.statusCode = 404;
+    return error;
+}
+
+export function badRequest(message = 'Solicitud inválida') {
+    const error = new Error(message);
+    error.statusCode = 400;
+    return error;
+}
+
+export function conflict(message = 'Conflicto') {
+    const error = new Error(message);
+    error.statusCode = 409;
+    return error;
+}
+
+export function internalServerError(message = 'Error interno del servidor') {
+    const error = new Error(message);
+    error.statusCode = 500;
+    return error;
+}
+
+

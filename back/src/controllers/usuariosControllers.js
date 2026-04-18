@@ -1,12 +1,13 @@
 // src/controllers/usuariosControllers.js
 import pool from '../db/config.js';
-
 import { validarName, validarEmail, validarBio } from '../utils/validatorsU.js';
+import { notFound, badRequest, conflict, internalServerError } from '../middlewares/errorHanlder.js';
+
 
 // GET /api/usuarios - Obtener todos los usuarios
 export const getAllUsuarios = async (req, res, next) => {
     try {
-    const result = await pool.query('SELECT * FROM usuarios ORDER BY name');
+    const result = await pool.query('SELECT * FROM usuarios ORDER BY ID');
     res.json(result.rows);
   } catch (error) {
     return next(internalServerError("Error obteniendo usuarios"));
@@ -17,7 +18,7 @@ export const getAllUsuarios = async (req, res, next) => {
 export const getUsuarioById = async (req, res, next) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM usuarios WHERE id = $1',
+      'SELECT * FROM usuarios WHERE ID = $1',
       [req.params.id]
     );
     if (result.rows.length === 0) {

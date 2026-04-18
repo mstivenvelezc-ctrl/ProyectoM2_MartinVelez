@@ -1,13 +1,17 @@
-
+import 'dotenv/config'; 
 import express from "express";
 import router from "./routes/index.js";
 import { errorHandler } from "./middlewares/errorHanlder.js";
 
+
 const app = express();
+
 app.use(express.json());
 
 app.use('/api', router);
+
 app.use(errorHandler);
+
 
 
 // Log temporal para ver las rutas registradas
@@ -25,23 +29,13 @@ app.get('/', (req, res) => {
   res.json({ 
     message: 'ProyectoM2_MartinVelez API',
     endpoints: {
-      usuarios: '/api/usuarios',
-      publicaciones: '/api/publicaciones',
+      usuarios: './api/usuarios',
+      publicaciones: './api/publicaciones',
     }
   });
 });
 
-/*// Middleware de manejo de errores
-app.use((err, req, res, next) => {
-  console.error('Error no manejado:', err);
-  if (err.code) {
-    if (err.code === '23505') return res.status(409).json({ error: 'Registro duplicado' });
-    if (err.code === '23503') return res.status(409).json({ error: 'Violación de relación entre tablas' });
-    if (err.code === '23502') return res.status(400).json({ error: 'Campo requerido faltante' });
-  }
-  res.status(500).json({ error: 'Error interno del servidor' });
-});
-*/
+
 
 // Swagger UI para documentación
 import swaggerUi from "swagger-ui-express";

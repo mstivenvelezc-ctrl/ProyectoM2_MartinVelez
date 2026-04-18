@@ -10,7 +10,7 @@ info:
 servers:
   - url: http://localhost:3000
     description: Servidor de desarrollo
-  - url: https:// ProyectoM2_MartinVelez.railway.app
+  - url: https:// ProyectoM2_MartinVelez/back.railway.app
     description: Servidor de producción
 paths:
   /api/usuarios:

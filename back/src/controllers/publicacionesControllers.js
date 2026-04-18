@@ -1,7 +1,8 @@
 // src/controllers/publicacionesControllers.js
 import pool from '../db/config.js';
-
 import { validarTitle, validarUsuariosId, validarContent, validarPublished } from '../utils/validatorsP.js';
+import { notFound, badRequest, conflict, internalServerError } from '../middlewares/errorHanlder.js';
+
 
 // GET /api/posts - Obtener todos las publicaciones
 export const getAllPublicaciones = async (req, res, next) => {
