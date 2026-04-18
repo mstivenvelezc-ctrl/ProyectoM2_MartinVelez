@@ -4,18 +4,21 @@ info:
   version: 1.0.0
   description: API para gestionar usuarios y publicaciones
   contact:
-    name: Tu Nombre
+    name: Martín Vélez
     email: tu@email.com
 
 servers:
   - url: http://localhost:3000
     description: Servidor de desarrollo
-  - url: https:// ProyectoM2_MartinVelez/back.railway.app
+  - url: https://ProyectoM2_MartinVelez.railway.app
     description: Servidor de producción
+
 paths:
   /api/usuarios:
     get:
       summary: Obtener todos los usuarios
+      tags:
+        - Usuarios
       responses:
         '200':
           description: Lista de usuarios
@@ -25,28 +28,65 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
     post:
-      summary: Crear usuario
+      summary: Crear un nuevo usuario
+      tags:
+        - Usuarios
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Usuario'
+              $ref: '#/components/schemas/UsuarioInput'
+            example:
+              name: "Ana García"
+              email: "ana@example.com"
+              bio: "Desarrolladora full-stack apasionada por Node.js"
       responses:
         '201':
-          description: Usuario creado
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: El email ya está registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /api/usuarios/{id}:
     get:
       summary: Obtener usuario por ID
+      tags:
+        - Usuarios
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+          example: 1
       responses:
         '200':
           description: Usuario encontrado
@@ -55,14 +95,317 @@ paths:
               schema:
                 $ref: '#/components/schemas/Usuario'
         '404':
-          description: No encontrado
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Actualizar usuario por ID
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+            example:
+              name: "Ana García Actualizada"
+              email: "ana.nueva@example.com"
+              bio: "Bio actualizada"
+      responses:
+        '200':
+          description: Usuario actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: El email ya está registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Eliminar usuario por ID
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Usuario eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario eliminado exitosamente"
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /api/publicaciones:
     get:
-      summary: Obtener publicaciones
+      summary: Obtener todas las publicaciones
+      tags:
+        - Publicaciones
+      parameters:
+        - name: published
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filtrar por estado de publicación
+          example: true
       responses:
         '200':
           description: Lista de publicaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Publicacion'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Crear una nueva publicación
+      tags:
+        - Publicaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicacionInput'
+            example:
+              title: "Mi primera publicación"
+              content: "Este es el contenido de mi primera publicación en el blog."
+              usuarios_id: 1
+              published: false
+      responses:
+        '201':
+          description: Publicación creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publicacion'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: El autor especificado no existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/publicaciones/{id}:
+    get:
+      summary: Obtener publicación por ID
+      tags:
+        - Publicaciones
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Publicación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publicacion'
+        '404':
+          description: Publicación no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Actualizar publicación por ID
+      tags:
+        - Publicaciones
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicacionUpdateInput'
+            example:
+              title: "Título actualizado"
+              content: "Contenido actualizado con más de 20 caracteres."
+              published: true
+      responses:
+        '200':
+          description: Publicación actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publicacion'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Publicación no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Eliminar publicación por ID
+      tags:
+        - Publicaciones
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Publicación eliminada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Publicación eliminada exitosamente"
+        '404':
+          description: Publicación no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/publicaciones/usuarios/{usuarioId}:
+    get:
+      summary: Obtener publicaciones por usuario
+      tags:
+        - Publicaciones
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Lista de publicaciones del usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Publicacion'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -71,15 +414,110 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         name:
           type: string
+          example: "Ana García"
         email:
           type: string
+          example: "ana@example.com"
         bio:
           type: string
+          example: "Desarrolladora full-stack apasionada por Node.js"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-04-13T12:59:26.299Z"
+
+    UsuarioInput:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: "Ana García"
+        email:
+          type: string
+          format: email
+          example: "ana@example.com"
+        bio:
+          type: string
+          minLength: 10
+          maxLength: 200
+          example: "Desarrolladora full-stack apasionada por Node.js"
+
+    Publicacion:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Mi primera publicación"
+        content:
+          type: string
+          example: "Este es el contenido de mi primera publicación."
+        usuarios_id:
+          type: integer
+          example: 1
+        published:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-04-13T12:59:26.299Z"
+
+    PublicacionInput:
+      type: object
+      required:
+        - title
+        - content
+        - usuarios_id
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+          example: "Mi primera publicación"
+        content:
+          type: string
+          minLength: 20
+          example: "Este es el contenido de mi primera publicación en el blog."
+        usuarios_id:
+          type: integer
+          example: 1
+        published:
+          type: boolean
+          example: false
+
+    PublicacionUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+          example: "Título actualizado"
+        content:
+          type: string
+          minLength: 20
+          example: "Contenido actualizado con más de 20 caracteres."
+        published:
+          type: boolean
+          example: true
 
     Error:
       type: object
       properties:
         error:
           type: string
+          example: "Mensaje de error"
+        status:
+          type: integer
+          example: 404
