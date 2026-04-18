@@ -5,7 +5,7 @@ info:
   description: API para gestionar usuarios y publicaciones
   contact:
     name: Martín Vélez
-    email: tu@email.com
+    email: mstivenvelezc@gmail.com
 
 servers:
   - url: http://localhost:3000
