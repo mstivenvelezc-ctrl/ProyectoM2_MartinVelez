@@ -17,7 +17,7 @@ CREATE TABLE Publicaciones (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE
 );
-
+41
 
 INSERT INTO Usuarios (name, email, bio) VALUES
   ('Ana García', 'ana@example.com', 'Desarrolladora full-stack apasionada por Node.js'),
