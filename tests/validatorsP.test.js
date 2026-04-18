@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { validarTitle, validarContent, validarUsuariosId, validarPublished} from '../src/utils/validatorsp.js';
+import { validarTitle, validarContent, validarUsuariosId, validarPublished} from '../back/src/utils/validatorsp.js';
 
 // Pruebas para validarTitle
 describe('validarTitle', () => {

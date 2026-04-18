@@ -2,8 +2,8 @@
 
 import { describe, test, expect } from 'vitest';
 import request from 'supertest';
-import app from '../src/app.js';
-import pool from '../src/db/config.js';
+import app from '../back/src/app.js';
+import pool from '../back/src/db/config.js';
 
 
 // Prueba para GET /api/usuarios
