@@ -1,6 +1,6 @@
 // usuarios tests
 import { describe, test, expect } from "vitest";
-import { validarEmail, validarName, validarBio} from '../back/src/utils/validatorsU.js';
+import { validarEmail, validarName, validarBio} from '../src/utils/validatorsU.js';
 
 // Pruebas para validarEmail
 describe('validarEmail', () => {

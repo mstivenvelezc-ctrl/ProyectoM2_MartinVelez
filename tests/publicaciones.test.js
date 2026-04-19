@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach } from 'vitest';
 import request from 'supertest';
-import app from '../back/src/app.js';
-import pool from '../back/src/db/config.js';
+import app from '../src/app.js';
+import pool from '../src/db/config.js';
 
 // Usuario de prueba que se usará como autor
 const USUARIO_ID = 1; // Asegúrate que este ID exista en tu BD
