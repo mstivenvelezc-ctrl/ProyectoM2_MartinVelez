@@ -10,8 +10,7 @@ info:
 servers:
   - url: https://proyectom2martinvelez-production.up.railway.app
     description: Servidor de desarrollo
-  - url: https://ProyectoM2_MartinVelez.railway.app
-    description: Servidor de producción
+
 
 paths:
   /api/usuarios:
