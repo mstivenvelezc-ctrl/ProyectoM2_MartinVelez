@@ -29,7 +29,7 @@ Esta es una API REST para un blog que permite gestionar usuarios y publicaciones
 - `DELETE /api/publicaciones/{id}` - Eliminar una publicación por ID
 - `GET /api/publicaciones/usuarios/{usuarioId}` - Obtener publicaciones de un usuario específico
 
-`GET /api/comentarios` - Obtener todas los comentarios
+- `GET /api/comentarios` - Obtener todas los comentarios
 - `POST /api/comentarios` - Crear un nuevo comentario
 - `GET /api/comentario/{id}` - Obtener un comentario por ID
 - `PUT /api/comentario/{id}` - Actualizar un comentario por ID
