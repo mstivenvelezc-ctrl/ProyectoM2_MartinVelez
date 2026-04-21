@@ -40,13 +40,13 @@ Esta es una API REST para un blog que permite gestionar usuarios y publicaciones
 ## Ejemplos de uso
 ### Obtener todos los usuarios
 ```bash
-curl -X GET "https://ProyectoM2_MartinVelez.railway.app/api/usuarios" \
+curl -X GET "https://proyectom2martinvelez-production.up.railway.app/api/Usuarios" \
   -H "Accept: application/json"
 ```
 
 ### Crear un usuario
 ```bash
-curl -X POST "https://ProyectoM2_MartinVelez.railway.app/api/usuarios" \
+curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api/Usuarios" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Ana García",
@@ -57,13 +57,13 @@ curl -X POST "https://ProyectoM2_MartinVelez.railway.app/api/usuarios" \
 
 ### Obtener todas las publicaciones
 ```bash
-curl -X GET "https://ProyectoM2_MartinVelez.railway.app/api/publicaciones" \
+curl -X GET "https://proyectom2martinvelez-production.up.railway.app/api/Publicaciones" \
   -H "Accept: application/json"
 ```
 
 ### Crear una publicación
 ```bash
-curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api-docs/publicaciones" \
+curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api/Publicaciones" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Mi primera publicación",
@@ -72,6 +72,24 @@ curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api-docs/p
     "published": false
   }'
 ```
+
+### Obtener todos los comentarios
+```bash
+curl -X GET "https://proyectom2martinvelez-production.up.railway.app/api/Comentarios" \
+  -H "Accept: application/json"
+```
+
+### Crear una publicación
+```bash
+curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api/Comentarios" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Mi primer comentario",
+    "content": "Este es el contenido de mi primera comentario en el blog.",
+    "usuarios_id": 1,
+  }'
+```
+
 
 ## Documentación interactiva
 - Swagger UI: `https://proyectom2martinvelez-production.up.railway.app/api-docs/#/`
