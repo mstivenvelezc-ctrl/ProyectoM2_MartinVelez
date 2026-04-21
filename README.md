@@ -4,7 +4,7 @@
 Esta es una API REST para un blog que permite gestionar usuarios y publicaciones. Está construida con Node.js, Express y PostgreSQL, y sirve como backend para operaciones de CRUD sobre usuarios y entradas de blog.
 
 ## URL de la API
-- Producción: `https://ProyectoM2_MartinVelez.railway.app`
+- Producción: `https://proyectom2martinvelez-production.up.railway.app/api-docs/`
 
 ## Tecnologías utilizadas
 - Node.js
@@ -55,7 +55,7 @@ curl -X GET "https://ProyectoM2_MartinVelez.railway.app/api/publicaciones" \
 
 ### Crear una publicación
 ```bash
-curl -X POST "https://ProyectoM2_MartinVelez.railway.app/api/publicaciones" \
+curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api-docs/publicaciones" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Mi primera publicación",
@@ -66,7 +66,7 @@ curl -X POST "https://ProyectoM2_MartinVelez.railway.app/api/publicaciones" \
 ```
 
 ## Documentación interactiva
-- Swagger UI: `https://ProyectoM2_MartinVelez.railway.app/api-docs`
+- Swagger UI: `https://proyectom2martinvelez-production.up.railway.app/api-docs/#/`
 
 ## Instalación local
 1. Clonar el repositorio:
