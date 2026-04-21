@@ -42,7 +42,7 @@ INSERT INTO publicaciones (title, content, usuario_id, published) VALUES
   ('Async/Await explicado', 'Las promesas simplifican el código asíncrono...', 1, false);
 
 INSERT INTO comentarios (title, content, publicacion_id, usuarios_id) VALUES
-  ('Gran artículo', 'Me gustó mucho la explicación sobre Node.js', 1, 1),
-  ('Muy útil', 'La comparación entre PostgreSQL y MySQL fue muy clara', 2, 2),
-  ('Excelente guía', 'La sección sobre APIs RESTful fue muy informativa', 3, 1),
-  ('Esperando publicación', 'Estoy ansioso por leer el artículo sobre manejo de errores', 4, 3);
+  ('Gran artículo', 'Me gustó mucho la explicación sobre Node.js', 6, 1),
+  ('Muy útil', 'La comparación entre PostgreSQL y MySQL fue muy clara', 7, 2),
+  ('Excelente guía', 'La sección sobre APIs RESTful fue muy informativa', 8, 1),
+  ('Esperando publicación', 'Estoy ansioso por leer el artículo sobre manejo de errores', 9, 3);
