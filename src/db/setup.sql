@@ -20,13 +20,13 @@ CREATE TABLE publicaciones (
 
 CREATE TABLE comentarios (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(200) NOT NULL,
+  title VARCHAR(200),
   content TEXT NOT NULL,
   publicacion_id INTEGER NOT NULL,
-  usuario_id INTEGER NOT NULL,
+  usuarios_id INTEGER NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   FOREIGN KEY (publicacion_id) REFERENCES publicaciones(id) ON DELETE CASCADE,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+  FOREIGN KEY (usuarios_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 INSERT INTO usuarios (name, email, bio) VALUES
@@ -41,7 +41,7 @@ INSERT INTO publicaciones (title, content, usuario_id, published) VALUES
   ('Manejo de errores en Express', 'El manejo apropiado de errores...', 3, false),
   ('Async/Await explicado', 'Las promesas simplifican el código asíncrono...', 1, false);
 
-INSERT INTO comentarios (title, content, publicacion_id, usuario_id) VALUES
+INSERT INTO comentarios (title, content, publicacion_id, usuarios_id) VALUES
   ('Gran artículo', 'Me gustó mucho la explicación sobre Node.js', 1, 1),
   ('Muy útil', 'La comparación entre PostgreSQL y MySQL fue muy clara', 2, 2),
   ('Excelente guía', 'La sección sobre APIs RESTful fue muy informativa', 3, 1),

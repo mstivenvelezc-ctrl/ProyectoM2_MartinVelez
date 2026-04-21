@@ -10,7 +10,8 @@ info:
 servers:
   - url: https://proyectom2martinvelez-production.up.railway.app
     description: Servidor de desarrollo
-
+  - url: http://localhost:3000
+    description: Servidor local
 
 paths:
   /api/usuarios:
@@ -406,6 +407,207 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /api/comentarios:
+    get:
+      summary: Obtener todos los comentarios
+      tags:
+        - Comentarios
+      responses:
+        '200':
+          description: Lista de comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comentario'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Crear un nuevo comentario
+      tags:
+        - Comentarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComentarioInput'
+            example:
+              publicacion_id: 1
+              usuarios_id: 1
+              content: "Este es un comentario de prueba con más de 20 caracteres."
+      responses:
+        '201':
+          description: Comentario creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comentario'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: El autor o publicación especificada no existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/comentarios/{id}:
+    get:
+      summary: Obtener comentario por ID
+      tags:
+        - Comentarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Comentario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comentario'
+        '404':
+          description: Comentario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Actualizar comentario por ID
+      tags:
+        - Comentarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComentarioUpdateInput'
+            example:
+              content: "Contenido actualizado con más de 20 caracteres."
+      responses:
+        '200':
+          description: Comentario actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comentario'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Comentario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Eliminar comentario por ID
+      tags:
+        - Comentarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Comentario eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comentario eliminado exitosamente"
+        '404':
+          description: Comentario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/comentarios/publicacion/{publicacionId}:
+    get:
+      summary: Obtener comentarios por publicación
+      tags:
+        - Comentarios
+      parameters:
+        - name: publicacionId
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Lista de comentarios de la publicación
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comentario'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     Usuario:
@@ -510,6 +712,55 @@ components:
         published:
           type: boolean
           example: true
+
+    Comentario:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Título del comentario"
+        content:
+          type: string
+          example: "Este es el contenido del comentario."
+        publicacion_id:
+          type: integer
+          example: 1
+        usuarios_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-04-21T00:08:32.000Z"
+
+    ComentarioInput:
+      type: object
+      required:
+        - publicacion_id
+        - usuarios_id
+        - content
+      properties:
+        publicacion_id:
+          type: integer
+          example: 1
+        usuarios_id:
+          type: integer
+          example: 1
+        content:
+          type: string
+          minLength: 20
+          example: "Este es un comentario de prueba con más de 20 caracteres."
+
+    ComentarioUpdateInput:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 20
+          example: "Contenido actualizado con más de 20 caracteres."
 
     Error:
       type: object
