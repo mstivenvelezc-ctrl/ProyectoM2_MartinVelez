@@ -78,21 +78,21 @@ curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api-docs/p
 
 ## Clonar el repositorio:
 1. Clonar el repositorio:
-   ```bash
+```bash
 git clone <https://github.com/mstivenvelezc-ctrl/ProyectoM2_MartinVelez>
 cd ProyectoM2_MartinVelez/back
 ```
 2. Instalar dependencias:
-   ```bash
+```bash
 npm install
 ```
 3. Crear un archivo `.env` en `back/` con al menos estas variables:
-   ```env
+```env
 PORT=3000
 DATABASE_URL=postgres://usuario:password@localhost:5432/tu_base_de_datos
 ```
 4. Ejecutar el servidor en modo desarrollo:
-   ```bash
+```bash
 npm run dev
 ```
 5. Abrir la API local en:
