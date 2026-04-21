@@ -33,6 +33,8 @@ app.get('/', (req, res) => {
     endpoints: {
       usuarios: './api/usuarios',
       publicaciones: './api/publicaciones',
+      comentarios: './api/comentarios',
+      docs: './api-docs'
     }
   });
 });

@@ -46,13 +46,4 @@ export function validarUsuariosId(usuarios_id) {
     return null;
 }
 
-// Validador para el campo published
-export function validarPublished(published) {
-    if (published === undefined) {
-        return null; // El campo es opcional, no hay error si no se proporciona
-    }
-    if (typeof published !== "boolean") {
-        return "el campo published debe ser un booleano";
-    }
-    return null;
-}
+
