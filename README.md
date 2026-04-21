@@ -86,7 +86,7 @@ cd ProyectoM2_MartinVelez/back
    ```bash
 npm install
 ```
-3. Crear un archivo `.env` en `` con al menos estas variables:
+3. Crear un archivo `.env` con al menos estas variables:
 
  DATABASE_URL=postgresql://postgres:password@localhost/db_name
 
