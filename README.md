@@ -79,7 +79,7 @@ curl -X GET "https://proyectom2martinvelez-production.up.railway.app/api/Comenta
   -H "Accept: application/json"
 ```
 
-### Crear una publicación
+### Crear un comentario
 ```bash
 curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api/Comentarios" \
   -H "Content-Type: application/json" \
