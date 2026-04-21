@@ -29,6 +29,14 @@ Esta es una API REST para un blog que permite gestionar usuarios y publicaciones
 - `DELETE /api/publicaciones/{id}` - Eliminar una publicación por ID
 - `GET /api/publicaciones/usuarios/{usuarioId}` - Obtener publicaciones de un usuario específico
 
+`GET /api/comentarios` - Obtener todas los comentarios
+- `POST /api/comentarios` - Crear un nuevo comentario
+- `GET /api/comentario/{id}` - Obtener un comentario por ID
+- `PUT /api/comentario/{id}` - Actualizar un comentario por ID
+- `DELETE /api/comentario/{id}` - Eliminar un comentario por ID
+- `GET /api/comentario/publicacion/{publicacionId}` - Obtener comentario de una publicacion en específico
+
+
 ## Ejemplos de uso
 ### Obtener todos los usuarios
 ```bash
@@ -68,7 +76,7 @@ curl -X POST "https://proyectom2martinvelez-production.up.railway.app/api-docs/p
 ## Documentación interactiva
 - Swagger UI: `https://proyectom2martinvelez-production.up.railway.app/api-docs/#/`
 
-## Instalación local
+## Clonar el repositorio:
 1. Clonar el repositorio:
    ```bash
 git clone <https://github.com/mstivenvelezc-ctrl/ProyectoM2_MartinVelez>
@@ -78,10 +86,10 @@ cd ProyectoM2_MartinVelez/back
    ```bash
 npm install
 ```
-3. Crear un archivo `.env` en `back/` con al menos estas variables:
-   ```env
-PORT=3000
-DATABASE_URL=postgres://usuario:password@localhost:5432/tu_base_de_datos
+3. Crear un archivo `.env` en `` con al menos estas variables:
+
+ DATABASE_URL=postgresql://postgres:password@localhost/db_name
+
 ```
 4. Ejecutar el servidor en modo desarrollo:
    ```bash
