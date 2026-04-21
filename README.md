@@ -86,10 +86,10 @@ cd ProyectoM2_MartinVelez/back
    ```bash
 npm install
 ```
-3. Crear un archivo `.env` con al menos estas variables:
-
- DATABASE_URL=postgresql://postgres:password@localhost/db_name
-
+3. Crear un archivo `.env` en `back/` con al menos estas variables:
+   ```env
+PORT=3000
+DATABASE_URL=postgres://usuario:password@localhost:5432/tu_base_de_datos
 ```
 4. Ejecutar el servidor en modo desarrollo:
    ```bash
