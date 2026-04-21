@@ -12,8 +12,6 @@ app.use(express.json());
 
 app.use('/api', router);
 
-app.use(errorHandler);
-
 
 
 // Log temporal para ver las rutas registradas
@@ -40,7 +38,6 @@ app.get('/', (req, res) => {
 });
 
 
-
 // Swagger UI para documentación
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
@@ -61,5 +58,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
+
+app.use(errorHandler);
+
 
 export default app;

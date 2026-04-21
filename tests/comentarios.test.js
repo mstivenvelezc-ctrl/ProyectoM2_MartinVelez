@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../src/app.js';
 import pool from '../src/db/config.js';
 
-const PUBLICACION_ID = 1;
+const PUBLICACION_ID = 26;
 const USUARIO_ID = 1;
 
 // GET /api/comentarios

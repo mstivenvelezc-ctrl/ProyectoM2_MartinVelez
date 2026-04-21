@@ -58,7 +58,7 @@ describe("POST /api/publicaciones", () => {
             .send({
                 title: "Título de prueba válido",
                 content: "Este es un contenido de prueba que tiene más de 20 caracteres.",
-                usuarios_id: USUARIO_ID,
+                usuario_id: USUARIO_ID,
                 published: false
             });
 
@@ -66,7 +66,7 @@ describe("POST /api/publicaciones", () => {
         expect(response.body).toHaveProperty("id");
         expect(response.body).toHaveProperty("title", "Título de prueba válido");
         expect(response.body).toHaveProperty("content");
-        expect(response.body).toHaveProperty("usuarios_id", USUARIO_ID);
+        expect(response.body).toHaveProperty("usuario_id", USUARIO_ID);
     });
 
     test("rechaza publicación sin título", async () => {
@@ -74,7 +74,7 @@ describe("POST /api/publicaciones", () => {
             .post("/api/publicaciones")
             .send({
                 content: "Este es un contenido de prueba que tiene más de 20 caracteres.",
-                usuarios_id: USUARIO_ID
+                usuario_id: USUARIO_ID
             });
 
         expect(response.statusCode).toBe(400);
@@ -88,7 +88,7 @@ describe("POST /api/publicaciones", () => {
             .send({
                 title: "Abc",
                 content: "Este es un contenido de prueba que tiene más de 20 caracteres.",
-                usuarios_id: USUARIO_ID
+                usuario_id: USUARIO_ID
             });
 
         expect(response.statusCode).toBe(400);
@@ -100,7 +100,7 @@ describe("POST /api/publicaciones", () => {
             .post("/api/publicaciones")
             .send({
                 title: "Título de prueba válido",
-                usuarios_id: USUARIO_ID
+                usuario_id: USUARIO_ID
             });
 
         expect(response.statusCode).toBe(400);
@@ -114,14 +114,14 @@ describe("POST /api/publicaciones", () => {
             .send({
                 title: "Título de prueba válido",
                 content: "Corto",
-                usuarios_id: USUARIO_ID
+                usuario_id: USUARIO_ID
             });
 
         expect(response.statusCode).toBe(400);
         expect(response.body.error).toContain("al menos 20 caracteres");
     });
 
-    test("rechaza publicación sin usuarios_id", async () => {
+    test("rechaza publicación sin usuario_id", async () => {
         const response = await request(app)
             .post("/api/publicaciones")
             .send({
@@ -133,13 +133,13 @@ describe("POST /api/publicaciones", () => {
         expect(response.body.error).toContain("requerido");
     });
 
-    test("rechaza publicación con usuarios_id inexistente", async () => {
+    test("rechaza publicación con usuario_id inexistente", async () => {
         const response = await request(app)
             .post("/api/publicaciones")
             .send({
                 title: "Título de prueba válido",
                 content: "Este es un contenido de prueba que tiene más de 20 caracteres.",
-                usuarios_id: 9999
+                usuario_id: 9999
             });
 
         expect(response.statusCode).toBe(404);
@@ -152,7 +152,7 @@ describe("POST /api/publicaciones", () => {
             .send({
                 title: "Título de prueba válido",
                 content: "Este es un contenido de prueba que tiene más de 20 caracteres.",
-                usuarios_id: USUARIO_ID,
+                usuario_id: USUARIO_ID,
                 published: "sí"
             });
 

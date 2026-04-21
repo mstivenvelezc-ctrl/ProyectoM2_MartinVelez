@@ -20,6 +20,9 @@ const router = Router();
 // GET /api/posts - Obtener todos las publicaciones
 router.get('/', getAllPublicaciones);
 
+// GET /api/posts/author/:usuarioId - Obtener publicaciones por usuario
+router.get('/usuarios/:usuarioId', getPublicacionesByUsuarioId);
+
 // GET /api/posts/:id - Obtener una publicación por ID
 router.get('/:id', getPublicacionesById);
 
@@ -32,7 +35,6 @@ router.put('/:id',updatePublicaciones);
 // DELETE /api/posts/:id - Eliminar una publicación
 router.delete('/:id', deletePublicaciones);
 
-// GET /api/posts/author/:usuarioId - Obtener publicaciones por usuario
-router.get('/usuarios/:usuarioId', getPublicacionesByUsuarioId);
+
 
 export default router;
