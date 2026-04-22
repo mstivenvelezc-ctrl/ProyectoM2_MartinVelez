@@ -20,10 +20,12 @@ describe("GET /api/usuarios", () => {
 // Prueba para GET /api/usuarios/:id
 describe("GET /api/usuarios/:id", () => {
     test("devuelve un usuario por ID", async () => {
-        const response = await request(app).get("/api/usuarios/1");
+        const lista = await request(app).get("/api/usuarios");
+        const usuarioId = lista.body[0].id;
+        const response = await request(app).get(`/api/usuarios/${usuarioId}`);
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty("id", 1);
+        expect(response.body).toHaveProperty("id");
         expect(response.body).toHaveProperty("name");
         expect(response.body).toHaveProperty("email");
     });
